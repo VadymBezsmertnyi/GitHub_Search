@@ -42,9 +42,10 @@ app.get('/search/user', async (req, res) => {
   };
 
   await axios(
-    `${URL_GITHUB_API}/search/users?q=${query.user}`,
+    `${URL_GITHUB_API}search/users?q=${query.user}`,
     requestOptions
   ).then((result) => {
+    console.log(JSON.stringify(result.data));
     res.send(JSON.stringify({ ...result.data, userName: query.user }));
   });
 });
