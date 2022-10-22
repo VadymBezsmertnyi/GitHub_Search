@@ -1,12 +1,11 @@
 import axios from 'axios';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { DEFAULT_LIST_USERS, DEFAULT_SELECT_USER } from 'constans/default';
 import { IInitialState, IPayloadUsers, TUser } from 'types/main';
 
 const initialState: IInitialState = {
-  listUsers: DEFAULT_LIST_USERS,
+  listUsers: [],
   listUsersFavorite: [],
-  selectUser: DEFAULT_SELECT_USER,
+  selectUser: null,
   loading: false,
   error: false,
 };
@@ -22,7 +21,7 @@ const requestOptions = {
 export const searchUser = createAsyncThunk(
   'searchUser',
   ({ user }: { user: string }) => {
-    return axios(
+    return axios<IPayloadUsers>(
       `https://api.github.com/search/users?q=${user}`,
       requestOptions
     );
@@ -32,7 +31,7 @@ export const searchUser = createAsyncThunk(
 export const getFullInfoUser = createAsyncThunk(
   'getFullInfoUser',
   ({ user }: { user: string }) => {
-    return axios(`https://api.github.com/users/${user}`, requestOptions);
+    return axios<TUser>(`https://api.github.com/users/${user}`, requestOptions);
   }
 );
 
@@ -79,8 +78,7 @@ const mainReducer = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(searchUser.fulfilled, (state, action) => {
-        const { payload }: IPayloadUsers = action;
-        console.log(payload);
+        const { payload } = action;
 
         state.listUsers = payload.data.items;
         state.loading = false;
@@ -96,9 +94,9 @@ const mainReducer = createSlice({
       });
     builder
       .addCase(getFullInfoUser.fulfilled, (state, action) => {
-        const { payload }: IPayloadUsers = action;
+        const { payload } = action;
         const newListUsers = state.listUsers.map((item) => {
-          return item.id === payload.date.id ? payload.date : item;
+          return item.id === payload.data.id ? payload.data : item;
         });
         state.listUsers = newListUsers;
         state.loading = false;

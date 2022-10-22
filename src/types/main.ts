@@ -37,12 +37,13 @@ export type TUser = {
 export interface IInitialState {
   listUsers: TUser[];
   listUsersFavorite: TUser[];
-  selectUser: TUser;
+  selectUser: TUser | null;
   loading: boolean;
   error: boolean;
 }
 
 export interface IPayloadUsers {
+  items: TUser[];
   payload:
     | {
         data:
@@ -53,5 +54,5 @@ export interface IPayloadUsers {
             }
           | TUser;
       }
-    | any;
+    | TUser;
 }

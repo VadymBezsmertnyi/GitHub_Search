@@ -36,7 +36,6 @@ const Header = ({ type, name = 'Name user' }: IHeaderProps) => {
     const {
       target: { value },
     } = event;
-    console.log(value);
     if (value.length >= 3) dispatch(searchUser({ user: value }));
   };
 

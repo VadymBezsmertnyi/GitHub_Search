@@ -1,9 +1,11 @@
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Box, Divider, Typography } from '@mui/material';
 
 import { IconFavorite } from 'components';
-import { addFavorite, deleteFavorite } from 'reducers/reducer';
+import { addFavorite, deleteFavorite, getFullInfoUser } from 'reducers/reducer';
+import { AppDispatch } from 'store/store';
 import { TUser } from 'types/main';
 
 import useStyles from './ItemResult.styles';
@@ -14,7 +16,7 @@ interface IItemResultProps {
 }
 
 const ItemResult = ({ favorite, user }: IItemResultProps) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const classes = useStyles();
 
@@ -27,6 +29,10 @@ const ItemResult = ({ favorite, user }: IItemResultProps) => {
     if (favorite) dispatch(deleteFavorite({ idUser: user.id }));
     else dispatch(addFavorite({ idUser: user.id }));
   };
+
+  useEffect(() => {
+    if (user.bio === undefined) dispatch(getFullInfoUser({ user: user.login }));
+  }, []);
 
   return (
     <Box className={classes.itemResultContainer}>
