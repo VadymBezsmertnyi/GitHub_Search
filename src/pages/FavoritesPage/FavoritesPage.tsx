@@ -11,13 +11,13 @@ const FavoritesPage = () => {
   const classes = useStyles();
 
   return (
-    <Box className={classes.favoritesPage}>
+    <Box data-testid={'test_favorites_page'} className={classes.favoritesPage}>
       <Header type="favorites" />
       <Box className={classes.resultFavorites}>
         {listUsersFavorite.length ? (
           <Result items={listUsersFavorite} />
         ) : (
-          <Typography className={classes.textNotResult}>
+          <Typography data-testid={'test_favorites_page_text'} className={classes.textNotResult}>
             No favorite users...
           </Typography>
         )}
