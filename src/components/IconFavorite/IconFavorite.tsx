@@ -32,11 +32,18 @@ const IconFavorite = ({
       color="primary"
       aria-label="directions"
       className={classes[type]}
+      data-testid={'test_component_icon_favorite'}
     >
       {favorite ? (
-        <StarIcon className={classes.starFavoriteOn} />
+        <StarIcon
+          data-testid={`test_icon_favorite_type_icon_${favorite}`}
+          className={classes.starFavoriteOn}
+        />
       ) : (
-        <StarBorderIcon className={classes.starFavoriteOff} />
+        <StarBorderIcon
+          data-testid={`test_icon_favorite_type_icon_${favorite}`}
+          className={classes.starFavoriteOff}
+        />
       )}
     </IconButton>
   );

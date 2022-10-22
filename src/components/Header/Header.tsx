@@ -13,7 +13,7 @@ import { AppDispatch } from 'store/store';
 
 import useStyles from './Header.styles';
 
-interface IHeaderProps {
+export interface IHeaderProps {
   type: 'home' | 'favorites' | 'details';
   name?: string;
 }
@@ -40,7 +40,7 @@ const Header = ({ type, name = 'Name user' }: IHeaderProps) => {
   };
 
   return (
-    <Box className={classes.header}>
+    <Box data-testid={'test_component_header'} className={classes.header}>
       <Paper component="form" className={classes.inputSearch}>
         <IconButton
           onClick={clickBack}
@@ -48,14 +48,17 @@ const Header = ({ type, name = 'Name user' }: IHeaderProps) => {
           sx={{ p: '10px' }}
           aria-label="search"
         >
-          {homePage && <SearchIcon />}
-          {!homePage && <ArrowBackIcon />}
+          {homePage && (
+            <SearchIcon data-testid={'test_component_header_home_icon'} />
+          )}
+          {!homePage && <ArrowBackIcon data-testid={'test_component_header_not_home_icon'} />}
         </IconButton>
         {favoritePage && (
-          <Typography className={classes.input}>Favorites</Typography>
+          <Typography data-testid={'test_component_header_favorites_title'} className={classes.input}>Favorites</Typography>
         )}
         {homePage && (
           <InputBase
+            data-testid={'test_component_header_home_input'}
             className={classes.input}
             onChange={enterNameUser}
             placeholder="Search for GitHub users..."

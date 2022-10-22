@@ -29,7 +29,7 @@ const ItemResult = ({ favorite, user }: IItemResultProps) => {
   };
 
   return (
-    <Box className={classes.itemResultContainer}>
+    <Box data-testid={'test_component_item_result'} className={classes.itemResultContainer}>
       <Box className={classes.mainItemResultContainer}>
         <Box
           onClick={selectUser}
@@ -39,9 +39,10 @@ const ItemResult = ({ favorite, user }: IItemResultProps) => {
         />
         <Box onClick={selectUser} className={classes.textUserContainer}>
           <Typography
+          data-testid={'test_component_item_result_login'}
             className={classes.nameUser}
           >{`@${user.login}`}</Typography>
-          <Typography className={classes.descriptionsUser}>
+          <Typography data-testid={'test_component_item_result_description'} className={classes.descriptionsUser}>
             {user.bio}
           </Typography>
         </Box>

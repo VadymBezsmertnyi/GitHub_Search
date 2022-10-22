@@ -13,7 +13,7 @@ const Result = ({ items }: IResultProps) => {
   const classes = useStyles();
 
   return (
-    <Box className={classes.resultContainer}>
+    <Box data-testid={'test_component_result'} className={classes.resultContainer}>
       {items.map((item) => {
         return (
           <ItemResult
