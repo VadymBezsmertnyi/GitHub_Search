@@ -21,13 +21,13 @@ const HomePage = () => {
   const classes = useStyles();
 
   return (
-    <Box className={classes.homePage}>
+    <Box data-testid={'test_home_page'}  className={classes.homePage}>
       <Header type="home" />
       <Box className={classes.resultHome}>
         {listUsers.length ? (
           <Result items={showResult} />
         ) : (
-          <Typography className={classes.textNotResult}>
+          <Typography data-testid={'test_home_page_text'}  className={classes.textNotResult}>
             No search results...
           </Typography>
         )}
