@@ -1,8 +1,9 @@
 import { ReactElement, ReactNode } from 'react';
+import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { render, RenderOptions } from '@testing-library/react';
 import { ThemeProvider } from '@mui/material';
-import { Provider } from 'react-redux';
+import { SnackbarProvider } from 'notistack';
 
 import { store } from 'store';
 import { createAppTheme } from 'theme/theme';
@@ -22,7 +23,9 @@ const customRender = (
 ) =>
   render(
     <Provider store={store}>
-      <BrowserRouter>{ui}</BrowserRouter>
+      <SnackbarProvider autoHideDuration={1000} maxSnack={3}>
+        <BrowserRouter>{ui}</BrowserRouter>
+      </SnackbarProvider>
     </Provider>,
     {
       wrapper: MuiThemeProvider,

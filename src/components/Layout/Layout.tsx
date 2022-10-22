@@ -28,9 +28,9 @@ const Layout = () => {
   }, []);
 
   return (
-    <Box className={classes.layoutContainer}>
-      <Outlet />
-    </Box>
+      <Box className={classes.layoutContainer}>
+        <Outlet />
+      </Box>
   );
 };
 

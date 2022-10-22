@@ -7,6 +7,7 @@ import {
 import { ThemeProvider } from '@mui/material/styles';
 import { create } from 'jss';
 import jssIncreaseSpecificity from 'jss-increase-specificity';
+import { SnackbarProvider } from 'notistack';
 
 import { DetailsPage, FavoritesPage, HomePage } from 'pages';
 import { Layout } from 'components';
@@ -26,20 +27,22 @@ const App = () => {
 
   return (
     <StylesProvider jss={jss} generateClassName={generateClassName}>
-      <ThemeProvider theme={theme}>
-        <Router>
-          <Routes>
-            <Route element={<Layout />}>
-              <Route path="/" element={<HomePage />} />
+      <SnackbarProvider autoHideDuration={1000} maxSnack={3}>
+        <ThemeProvider theme={theme}>
+          <Router>
+            <Routes>
+              <Route element={<Layout />}>
+                <Route path="/" element={<HomePage />} />
 
-              <Route path="/details" element={<DetailsPage />} />
-              <Route path="/details/:id" element={<DetailsPage />} />
+                <Route path="/details" element={<DetailsPage />} />
+                <Route path="/details/:id" element={<DetailsPage />} />
 
-              <Route path="/favorites" element={<FavoritesPage />} />
-            </Route>
-          </Routes>
-        </Router>
-      </ThemeProvider>
+                <Route path="/favorites" element={<FavoritesPage />} />
+              </Route>
+            </Routes>
+          </Router>
+        </ThemeProvider>
+      </SnackbarProvider>
     </StylesProvider>
   );
 };

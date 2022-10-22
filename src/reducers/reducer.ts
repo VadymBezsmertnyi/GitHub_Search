@@ -8,6 +8,7 @@ const initialState: IInitialState = {
   selectUser: null,
   loading: false,
   error: false,
+  message: '',
 };
 
 const requestOptions = {
@@ -89,12 +90,14 @@ const mainReducer = createSlice({
         state.error = false;
       })
       .addCase(searchUser.rejected, (state) => {
-        state.loading = true;
-        state.error = false;
-      })
-      .addCase(searchUser.pending, (state) => {
-        state.error = true;
         state.loading = false;
+        state.error = true;
+        state.message = 'Error server';
+      })
+      .addCase(searchUser.pending, (state, action) => {
+        state.error = false;
+        state.loading = true;
+        state.message = 'Loading users';
       });
     builder
       .addCase(getFullInfoUser.fulfilled, (state, action) => {
@@ -108,12 +111,14 @@ const mainReducer = createSlice({
         state.error = false;
       })
       .addCase(getFullInfoUser.rejected, (state) => {
-        state.loading = true;
-        state.error = false;
-      })
-      .addCase(getFullInfoUser.pending, (state) => {
-        state.error = true;
         state.loading = false;
+        state.error = true;
+        state.message = 'Error server';
+      })
+      .addCase(getFullInfoUser.pending, (state, action) => {
+        state.error = false;
+        state.loading = true;
+        state.message = 'Loading users';
       });
   },
 });

@@ -40,6 +40,7 @@ export interface IInitialState {
   selectUser: TUser | null;
   loading: boolean;
   error: boolean;
+  message: string;
 }
 
 export interface IPayloadUsers {
