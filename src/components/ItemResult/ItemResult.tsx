@@ -1,14 +1,13 @@
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { Box, Divider, Typography } from '@mui/material';
 
 import { IconFavorite } from 'components';
-import { addFavorite, deleteFavorite, getFullInfoUser } from 'reducers/reducer';
+import { addFavorite, deleteFavorite } from 'reducers/reducer';
 import { AppDispatch } from 'store/store';
-import { IInitialState, TUser } from 'types/main';
+import { TUser } from 'types/main';
 
 import useStyles from './ItemResult.styles';
-import { useEffect } from 'react';
 
 interface IItemResultProps {
   favorite: boolean;

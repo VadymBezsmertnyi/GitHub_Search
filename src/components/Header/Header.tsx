@@ -9,9 +9,9 @@ import {
 
 import { IconFavorite } from 'components';
 import { searchUser } from 'reducers/reducer';
+import { AppDispatch } from 'store/store';
 
 import useStyles from './Header.styles';
-import { AppDispatch } from 'store/store';
 
 interface IHeaderProps {
   type: 'home' | 'favorites' | 'details';

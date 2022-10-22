@@ -1,14 +1,13 @@
-import { Box, Typography } from '@mui/material';
-import { Header, Result } from 'components';
 import { useSelector } from 'react-redux';
+import { Box, Typography } from '@mui/material';
+
+import { Header, Result } from 'components';
 import { IInitialState } from 'types/main';
 
 import useStyles from './FavoritesPage.styles';
 
 const FavoritesPage = () => {
-  const { listUsersFavorite, error } = useSelector(
-    (state: IInitialState) => state
-  );
+  const { listUsersFavorite } = useSelector((state: IInitialState) => state);
 
   const classes = useStyles();
 
@@ -17,7 +16,7 @@ const FavoritesPage = () => {
       <Header type="favorites" />
       <Box className={classes.resultFavorites}>
         {listUsersFavorite.length ? (
-          <Result items={listUsersFavorite} errorServer={error} />
+          <Result items={listUsersFavorite} />
         ) : (
           <Typography
             data-testid={'test_favorites_page_text'}

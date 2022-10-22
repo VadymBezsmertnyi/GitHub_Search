@@ -1,4 +1,4 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useSnackbar } from 'notistack';
 import { Box, Typography } from '@mui/material';
 import { BeatLoader } from 'react-spinners';
@@ -7,12 +7,15 @@ import { Header, Result } from 'components';
 import { IInitialState } from 'types/main';
 
 import useStyles from './HomePage.styles';
+import { AppDispatch } from 'store/store';
+import { getFullInfoUser } from 'reducers/reducer';
 import { useEffect } from 'react';
 
 const HomePage = () => {
   const { listUsers, listUsersFavorite, loading, error, message } = useSelector(
     (state: IInitialState) => state
   );
+  const dispatch = useDispatch<AppDispatch>();
   const { enqueueSnackbar } = useSnackbar();
   const showResult = listUsers
     .map((user) => {
@@ -26,6 +29,13 @@ const HomePage = () => {
 
   if (error && message) enqueueSnackbar(message, { variant: 'error' });
 
+  useEffect(() => {
+    showResult.forEach((user) => {
+      if (user.bio === undefined && !error)
+        dispatch(getFullInfoUser({ user: user.login }));
+    });
+  }, []);
+
   return (
     <Box data-testid={'test_home_page'} className={classes.homePage}>
       <Header type="home" />
@@ -33,7 +43,7 @@ const HomePage = () => {
         {loading ? (
           <BeatLoader />
         ) : listUsers.length ? (
-          <Result items={showResult} errorServer={error} />
+          <Result items={showResult} />
         ) : (
           <Typography
             data-testid={'test_home_page_text'}

@@ -1,5 +1,5 @@
-import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';
 import { Header, IconFavorite } from 'components';
 

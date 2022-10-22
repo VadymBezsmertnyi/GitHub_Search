@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { IconButton } from '@mui/material';
 import {
   Star as StarIcon,
@@ -5,7 +6,6 @@ import {
 } from '@mui/icons-material';
 
 import useStyles from './IconFavorite.styles';
-import { useNavigate } from 'react-router-dom';
 
 interface IIconFavoriteProps {
   favorite: boolean;
