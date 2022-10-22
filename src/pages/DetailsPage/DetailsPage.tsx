@@ -2,21 +2,25 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Box, Typography } from '@mui/material';
 import { Header, IconFavorite } from 'components';
-import { avatarFullImg } from 'images';
 
-import { IInitialState } from 'types/main';
+import { IInitialState, TUser } from 'types/main';
 import useStyles from './DetailsPage.styles';
 import { useEffect } from 'react';
 
-const DetailsPage = () => {
+interface IDetailsPageProps {
+  userTest?: TUser;
+}
+
+const DetailsPage = ({ userTest }: IDetailsPageProps) => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { listUsers, listUsersFavorite } = useSelector(
     (state: IInitialState) => state
   );
-  const selectUser = [...listUsers, ...listUsersFavorite].find(
-    (user) => user.id === Number(id)
-  );
+  const selectUser =
+    [...listUsers, ...listUsersFavorite].find(
+      (user) => user.id === Number(id)
+    ) || userTest;
   const verifyFavorite =
     listUsersFavorite.findIndex(
       (userFavorite) => userFavorite.id === selectUser?.id
@@ -24,7 +28,7 @@ const DetailsPage = () => {
   const classes = useStyles();
 
   useEffect(() => {
-    if (!selectUser) navigate('/');
+    if (!selectUser && !userTest) navigate('/');
   });
 
   return (
@@ -38,10 +42,10 @@ const DetailsPage = () => {
             className={classes.avatarDetails}
           />
           <Box className={classes.detailsInfoUser}>
-            <Typography className={classes.fullNameUser}>
+            <Typography data-testid={'test_details_page_name_user'} className={classes.fullNameUser}>
               {selectUser?.name}
             </Typography>
-            <Typography
+            <Typography data-testid={'test_details_page_login_user'}
               className={classes.nameUser}
             >{`@${selectUser?.login}`}</Typography>
             <Typography className={classes.descriptionsUser}>
@@ -49,7 +53,7 @@ const DetailsPage = () => {
             </Typography>
             <Box className={classes.infoUser}>
               <Box className={classes.gitInfoUser}>
-                <Typography className={classes.numberGitInfoUser}>
+                <Typography data-testid={'test_details_page_followers_user'} className={classes.numberGitInfoUser}>
                   {selectUser?.followers}
                 </Typography>
                 <Typography className={classes.textGitInfoUser}>
@@ -57,7 +61,7 @@ const DetailsPage = () => {
                 </Typography>
               </Box>
               <Box style={{ margin: '0 28px' }} className={classes.gitInfoUser}>
-                <Typography className={classes.numberGitInfoUser}>
+                <Typography data-testid={'test_details_page_following_user'} className={classes.numberGitInfoUser}>
                   {selectUser?.following}
                 </Typography>
                 <Typography className={classes.textGitInfoUser}>
@@ -65,7 +69,7 @@ const DetailsPage = () => {
                 </Typography>
               </Box>
               <Box className={classes.gitInfoUser}>
-                <Typography className={classes.numberGitInfoUser}>
+                <Typography data-testid={'test_details_page_public_repos_user'} className={classes.numberGitInfoUser}>
                   {selectUser?.public_repos}
                 </Typography>
                 <Typography className={classes.textGitInfoUser}>
