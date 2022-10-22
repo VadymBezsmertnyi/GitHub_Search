@@ -1,22 +1,38 @@
+import axios from 'axios';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { DEFAULT_LIST_USERS, DEFAULT_SELECT_USER } from 'constans/default';
-import { useHttp } from 'hooks/http.hook';
-import { IInitialState } from 'types/main';
+import { IInitialState, IPayloadUsers, TUser } from 'types/main';
 
 const initialState: IInitialState = {
   listUsers: DEFAULT_LIST_USERS,
   listUsersFavorite: [],
   selectUser: DEFAULT_SELECT_USER,
   loading: false,
+  error: false,
 };
-//http://localhost:8080/user?user=moj
-//http://localhost:8080/search/user?user=bezsmertny
+
+const requestOptions = {
+  method: 'GET',
+  headers: {
+    accept: 'application/json',
+  },
+  redirect: 'follow',
+};
 
 export const searchUser = createAsyncThunk(
-  'weather/fetchInfoCityWeather',
-  (user: string) => {
-    const { request } = useHttp();
-    return request(`http://localhost:8080/search/user?user=${user}`, 'GET');
+  'searchUser',
+  ({ user }: { user: string }) => {
+    return axios(
+      `https://api.github.com/search/users?q=${user}`,
+      requestOptions
+    );
+  }
+);
+
+export const getFullInfoUser = createAsyncThunk(
+  'getFullInfoUser',
+  ({ user }: { user: string }) => {
+    return axios(`https://api.github.com/users/${user}`, requestOptions);
   }
 );
 
@@ -63,11 +79,38 @@ const mainReducer = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(searchUser.fulfilled, (state, action) => {
-        const { payload } = action;
+        const { payload }: IPayloadUsers = action;
         console.log(payload);
+
+        state.listUsers = payload.data.items;
+        state.loading = false;
+        state.error = false;
+      })
+      .addCase(searchUser.rejected, (state) => {
+        state.loading = true;
+        state.error = false;
       })
       .addCase(searchUser.pending, (state) => {
+        state.error = true;
+        state.loading = false;
+      });
+    builder
+      .addCase(getFullInfoUser.fulfilled, (state, action) => {
+        const { payload }: IPayloadUsers = action;
+        const newListUsers = state.listUsers.map((item) => {
+          return item.id === payload.date.id ? payload.date : item;
+        });
+        state.listUsers = newListUsers;
+        state.loading = false;
+        state.error = false;
+      })
+      .addCase(getFullInfoUser.rejected, (state) => {
         state.loading = true;
+        state.error = false;
+      })
+      .addCase(getFullInfoUser.pending, (state) => {
+        state.error = true;
+        state.loading = false;
       });
   },
 });

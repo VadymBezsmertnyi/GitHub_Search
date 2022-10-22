@@ -1,3 +1,6 @@
+import { ChangeEvent } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { Box, Paper, InputBase, IconButton, Typography } from '@mui/material';
 import {
   Search as SearchIcon,
@@ -5,9 +8,10 @@ import {
 } from '@mui/icons-material';
 
 import { IconFavorite } from 'components';
+import { searchUser } from 'reducers/reducer';
 
 import useStyles from './Header.styles';
-import { useNavigate } from 'react-router-dom';
+import { AppDispatch } from 'store/store';
 
 interface IHeaderProps {
   type: 'home' | 'favorites' | 'details';
@@ -15,6 +19,7 @@ interface IHeaderProps {
 }
 
 const Header = ({ type, name = 'Name user' }: IHeaderProps) => {
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const homePage = type === 'home';
   const favoritePage = type === 'favorites';
@@ -23,6 +28,16 @@ const Header = ({ type, name = 'Name user' }: IHeaderProps) => {
 
   const clickBack = () => {
     if (!homePage) navigate('/');
+  };
+
+  const enterNameUser = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const {
+      target: { value },
+    } = event;
+    console.log(value);
+    if (value.length >= 3) dispatch(searchUser({ user: value }));
   };
 
   return (
@@ -43,6 +58,7 @@ const Header = ({ type, name = 'Name user' }: IHeaderProps) => {
         {homePage && (
           <InputBase
             className={classes.input}
+            onChange={enterNameUser}
             placeholder="Search for GitHub users..."
             inputProps={{ 'aria-label': 'Search for GitHub users...' }}
           />

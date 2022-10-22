@@ -15,8 +15,12 @@ const stringMiddleware = () => (next: Function) => (
 const store = configureStore({
   reducer: reducer,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(stringMiddleware),
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }).concat(stringMiddleware),
   devTools: process.env.NODE_ENV !== 'production',
 });
 
 export default store;
+
+export type AppDispatch = typeof store.dispatch;

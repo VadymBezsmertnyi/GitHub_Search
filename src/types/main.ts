@@ -39,4 +39,19 @@ export interface IInitialState {
   listUsersFavorite: TUser[];
   selectUser: TUser;
   loading: boolean;
+  error: boolean;
+}
+
+export interface IPayloadUsers {
+  payload:
+    | {
+        data:
+          | {
+              total_count: number;
+              incomplete_results: boolean;
+              items: TUser[];
+            }
+          | TUser;
+      }
+    | any;
 }
