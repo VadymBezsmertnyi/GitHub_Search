@@ -11,11 +11,11 @@ import { useEffect } from 'react';
 const DetailsPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const selectUser = useSelector((state: IInitialState) =>
-    state.listUsers.find((user) => user.id === Number(id))
+  const { listUsers, listUsersFavorite } = useSelector(
+    (state: IInitialState) => state
   );
-  const listUsersFavorite = useSelector(
-    (state: IInitialState) => state.listUsersFavorite
+  const selectUser = [...listUsers, ...listUsersFavorite].find(
+    (user) => user.id === Number(id)
   );
   const verifyFavorite =
     listUsersFavorite.findIndex(
@@ -28,7 +28,7 @@ const DetailsPage = () => {
   });
 
   return (
-    <Box className={classes.detailsPage}>
+    <Box data-testid={'test_details_page'} className={classes.detailsPage}>
       <Header type="details" />
       <Box className={classes.resultDetails}>
         <Box className={classes.detailsUser}>
