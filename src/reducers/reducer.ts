@@ -77,7 +77,12 @@ const mainReducer = createSlice({
     },
     addUsersThisLocalStorage: (state) => {
       const oldListUsers = JSON.parse(localStorage.getItem('listUsers') || '');
-      state.listUsers = oldListUsers;
+      const verifyList =
+        oldListUsers.findIndex(
+          (localUser: TUser) =>
+            state.listUsers.findIndex((user) => user.id === localUser.id) >= 0
+        ) < 0;
+      state.listUsers = verifyList ? oldListUsers : state.listUsers;
     },
   },
   extraReducers: (builder) => {
@@ -92,9 +97,10 @@ const mainReducer = createSlice({
       .addCase(searchUser.rejected, (state) => {
         state.loading = false;
         state.error = true;
-        state.message = 'Error server';
+        state.message =
+          'Error GitHub server - search user(API rate limit exceeded)';
       })
-      .addCase(searchUser.pending, (state, action) => {
+      .addCase(searchUser.pending, (state) => {
         state.error = false;
         state.loading = true;
         state.message = 'Loading users';
@@ -113,9 +119,10 @@ const mainReducer = createSlice({
       .addCase(getFullInfoUser.rejected, (state) => {
         state.loading = false;
         state.error = true;
-        state.message = 'Error server';
+        state.message =
+          'Error GitHub server - get full info user(API rate limit exceeded)';
       })
-      .addCase(getFullInfoUser.pending, (state, action) => {
+      .addCase(getFullInfoUser.pending, (state) => {
         state.error = false;
         state.loading = true;
         state.message = 'Loading users';

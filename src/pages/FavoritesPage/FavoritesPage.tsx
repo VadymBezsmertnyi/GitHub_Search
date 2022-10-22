@@ -6,7 +6,9 @@ import { IInitialState } from 'types/main';
 import useStyles from './FavoritesPage.styles';
 
 const FavoritesPage = () => {
-  const { listUsersFavorite } = useSelector((state: IInitialState) => state);
+  const { listUsersFavorite, error } = useSelector(
+    (state: IInitialState) => state
+  );
 
   const classes = useStyles();
 
@@ -15,9 +17,12 @@ const FavoritesPage = () => {
       <Header type="favorites" />
       <Box className={classes.resultFavorites}>
         {listUsersFavorite.length ? (
-          <Result items={listUsersFavorite} />
+          <Result items={listUsersFavorite} errorServer={error} />
         ) : (
-          <Typography data-testid={'test_favorites_page_text'} className={classes.textNotResult}>
+          <Typography
+            data-testid={'test_favorites_page_text'}
+            className={classes.textNotResult}
+          >
             No favorite users...
           </Typography>
         )}

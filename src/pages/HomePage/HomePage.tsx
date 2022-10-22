@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { useSnackbar } from 'notistack';
 import { Box, Typography } from '@mui/material';
-import BeatLoader from 'react-spinners/BeatLoader';
+import { BeatLoader } from 'react-spinners';
 
 import { Header, Result } from 'components';
 import { IInitialState } from 'types/main';
@@ -24,28 +24,23 @@ const HomePage = () => {
 
   const classes = useStyles();
 
-  useEffect(() => {
-    if (loading && message) enqueueSnackbar(message, { variant: 'success' });
-    if (error && message) enqueueSnackbar(message, { variant: 'error' });
-    console.log({ loading, error, message });
-  }, [loading, error]);
+  if (error && message) enqueueSnackbar(message, { variant: 'error' });
 
   return (
     <Box data-testid={'test_home_page'} className={classes.homePage}>
       <Header type="home" />
       <Box className={classes.resultHome}>
-        {listUsers.length ? (
-          <Result items={showResult} />
+        {loading ? (
+          <BeatLoader />
+        ) : listUsers.length ? (
+          <Result items={showResult} errorServer={error} />
         ) : (
-          <>
-            {loading && <BeatLoader />}
-            <Typography
-              data-testid={'test_home_page_text'}
-              className={classes.textNotResult}
-            >
-              No search results...
-            </Typography>
-          </>
+          <Typography
+            data-testid={'test_home_page_text'}
+            className={classes.textNotResult}
+          >
+            No search results...
+          </Typography>
         )}
       </Box>
     </Box>
