@@ -25,7 +25,6 @@ const ItemResult = ({ favorite, user }: IItemResultProps) => {
   };
 
   const selectFavorite = () => {
-    console.log(user);
     if (favorite) dispatch(deleteFavorite({ idUser: user.id }));
     else dispatch(addFavorite({ idUser: user.id }));
   };

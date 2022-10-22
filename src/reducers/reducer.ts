@@ -74,12 +74,16 @@ const mainReducer = createSlice({
       );
       state.listUsersFavorite = oldFavoriteUsers;
     },
+    addUsersThisLocalStorage: (state) => {
+      const oldListUsers = JSON.parse(localStorage.getItem('listUsers') || '');
+      state.listUsers = oldListUsers;
+    },
   },
   extraReducers: (builder) => {
     builder
       .addCase(searchUser.fulfilled, (state, action) => {
         const { payload } = action;
-
+        localStorage.setItem('listUsers', JSON.stringify(payload.data.items));
         state.listUsers = payload.data.items;
         state.loading = false;
         state.error = false;
@@ -98,6 +102,7 @@ const mainReducer = createSlice({
         const newListUsers = state.listUsers.map((item) => {
           return item.id === payload.data.id ? payload.data : item;
         });
+        localStorage.setItem('listUsers', JSON.stringify(newListUsers));
         state.listUsers = newListUsers;
         state.loading = false;
         state.error = false;
@@ -121,4 +126,5 @@ export const {
   addFavorite,
   deleteFavorite,
   addFavoriteUsersThisLocalStorage,
+  addUsersThisLocalStorage,
 } = actions;

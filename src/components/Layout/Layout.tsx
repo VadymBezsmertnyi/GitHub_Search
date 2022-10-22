@@ -3,21 +3,28 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Outlet } from 'react-router-dom';
 import { Box } from '@mui/material';
 
-import { verifyFavoriteUsers } from 'hooks/localStorage';
+import { verifyFavoriteUsers, verifyUsers } from 'hooks/localStorage';
 import { IInitialState } from 'types/main';
-import { addFavoriteUsersThisLocalStorage } from 'reducers/reducer';
+import {
+  addFavoriteUsersThisLocalStorage,
+  addUsersThisLocalStorage,
+} from 'reducers/reducer';
 
 import useStyles from './Layout.styles';
 
 const Layout = () => {
-  const { listUsersFavorite } = useSelector((state: IInitialState) => state);
+  const { listUsers, listUsersFavorite } = useSelector(
+    (state: IInitialState) => state
+  );
   const dispatch = useDispatch();
   const classes = useStyles();
 
   useEffect(() => {
-    if (verifyFavoriteUsers() && !listUsersFavorite.length) {
+    if (verifyFavoriteUsers() && !listUsersFavorite.length)
       dispatch(addFavoriteUsersThisLocalStorage());
-    }
+
+    if (verifyUsers() && !listUsers.length)
+      dispatch(addUsersThisLocalStorage());
   }, []);
 
   return (
