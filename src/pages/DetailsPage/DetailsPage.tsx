@@ -1,11 +1,14 @@
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';
-import { Header, IconFavorite } from 'components';
 
+import { Header, IconFavorite } from 'components';
 import { IInitialState, TUser } from 'types/main';
+import { getFullInfoUser } from 'reducers/reducer';
+import { AppDispatch } from 'store/store';
+
 import useStyles from './DetailsPage.styles';
-import { useEffect } from 'react';
 
 interface IDetailsPageProps {
   userTest?: TUser;
@@ -14,7 +17,8 @@ interface IDetailsPageProps {
 const DetailsPage = ({ userTest }: IDetailsPageProps) => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { listUsers, listUsersFavorite } = useSelector(
+  const dispatch = useDispatch<AppDispatch>();
+  const { listUsers, listUsersFavorite, error } = useSelector(
     (state: IInitialState) => state
   );
   const selectUser =
@@ -29,11 +33,19 @@ const DetailsPage = ({ userTest }: IDetailsPageProps) => {
 
   useEffect(() => {
     if (!selectUser && !userTest) navigate('/');
-  });
+    if (
+      selectUser?.bio === undefined &&
+      !error &&
+      selectUser?.login !== undefined
+    )
+      dispatch(getFullInfoUser({ user: selectUser.login }));
+  }, []);
+
+  console.log(selectUser);
 
   return (
     <Box data-testid={'test_details_page'} className={classes.detailsPage}>
-      <Header type="details" />
+      <Header type="details" name={selectUser?.login} />
       <Box className={classes.resultDetails}>
         <Box className={classes.detailsUser}>
           <Box
@@ -42,18 +54,27 @@ const DetailsPage = ({ userTest }: IDetailsPageProps) => {
             className={classes.avatarDetails}
           />
           <Box className={classes.detailsInfoUser}>
-            <Typography data-testid={'test_details_page_name_user'} className={classes.fullNameUser}>
+            <Typography
+              data-testid={'test_details_page_name_user'}
+              className={classes.fullNameUser}
+            >
               {selectUser?.name}
             </Typography>
-            <Typography data-testid={'test_details_page_login_user'}
+            <Box
+              component="a"
+              href={selectUser?.html_url}
+              data-testid={'test_details_page_login_user'}
               className={classes.nameUser}
-            >{`@${selectUser?.login}`}</Typography>
+            >{`@${selectUser?.login}`}</Box>
             <Typography className={classes.descriptionsUser}>
               {selectUser?.bio}
             </Typography>
             <Box className={classes.infoUser}>
               <Box className={classes.gitInfoUser}>
-                <Typography data-testid={'test_details_page_followers_user'} className={classes.numberGitInfoUser}>
+                <Typography
+                  data-testid={'test_details_page_followers_user'}
+                  className={classes.numberGitInfoUser}
+                >
                   {selectUser?.followers}
                 </Typography>
                 <Typography className={classes.textGitInfoUser}>
@@ -61,7 +82,10 @@ const DetailsPage = ({ userTest }: IDetailsPageProps) => {
                 </Typography>
               </Box>
               <Box style={{ margin: '0 28px' }} className={classes.gitInfoUser}>
-                <Typography data-testid={'test_details_page_following_user'} className={classes.numberGitInfoUser}>
+                <Typography
+                  data-testid={'test_details_page_following_user'}
+                  className={classes.numberGitInfoUser}
+                >
                   {selectUser?.following}
                 </Typography>
                 <Typography className={classes.textGitInfoUser}>
@@ -69,7 +93,10 @@ const DetailsPage = ({ userTest }: IDetailsPageProps) => {
                 </Typography>
               </Box>
               <Box className={classes.gitInfoUser}>
-                <Typography data-testid={'test_details_page_public_repos_user'} className={classes.numberGitInfoUser}>
+                <Typography
+                  data-testid={'test_details_page_public_repos_user'}
+                  className={classes.numberGitInfoUser}
+                >
                   {selectUser?.public_repos}
                 </Typography>
                 <Typography className={classes.textGitInfoUser}>

@@ -37,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '14px',
     letterSpacing: '0.15px',
     color: theme.palette.custom?.main.link,
+    textDecoration: 'none',
   },
   descriptionsUser: {
     fontSize: '14px',
