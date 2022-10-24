@@ -17,6 +17,7 @@
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
     "axios": "^1.1.3",
+    "cra-template-pwa-typescript": "^2.0.0",
     "jss-increase-specificity": "^0.3.5",
     "notistack": "^2.0.8",
     "react": "^18.2.0",

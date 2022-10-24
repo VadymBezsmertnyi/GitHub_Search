@@ -5,6 +5,8 @@ import { Provider } from 'react-redux';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { store } from 'store';
+import * as serviceWorkerRegistration from './serviceWorkerRegistration';
+
 import './index.css';
 
 const root = ReactDOM.createRoot(
@@ -17,5 +19,7 @@ root.render(
     </Provider>
   </React.StrictMode>
 );
+
+serviceWorkerRegistration.unregister();
 
 reportWebVitals();
