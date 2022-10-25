@@ -15,8 +15,7 @@ const requestOptions = {
   method: 'GET',
   headers: {
     accept: 'application/vnd.github+json',
-    authorization:
-      'Bearer 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',
+      authorization:'Bearer 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',
   },
   body: {},
   redirect: 'follow',
