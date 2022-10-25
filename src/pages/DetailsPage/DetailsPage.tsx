@@ -63,6 +63,7 @@ const DetailsPage = ({ userTest }: IDetailsPageProps) => {
               href={selectUser?.html_url}
               data-testid={'test_details_page_login_user'}
               className={classes.nameUser}
+              target="_blank"
             >{`@${selectUser?.login}`}</Box>
             <Typography className={classes.descriptionsUser}>
               {selectUser?.bio}
