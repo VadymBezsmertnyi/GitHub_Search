@@ -10,12 +10,16 @@ const initialState: IInitialState = {
   error: false,
   message: '',
 };
+//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
 
 const requestOptions = {
   method: 'GET',
   headers: {
-    accept: 'application/json',
+    accept: 'application/vnd.github+json',
+    authorization:
+      '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',
   },
+  body: {},
   redirect: 'follow',
 };
 
