@@ -17,6 +17,8 @@ const HomePage = () => {
   );
   const dispatch = useDispatch<AppDispatch>();
   const { enqueueSnackbar } = useSnackbar();
+  const verifyDescription =
+    listUsers.findIndex((user) => user.bio === undefined && !error) >= 0;
   const showResult = listUsers.map((user) => {
     const favoriteUser =
       listUsersFavorite.findIndex((favorite) => favorite.id === user.id) >= 0;
@@ -28,11 +30,13 @@ const HomePage = () => {
   if (error && message) enqueueSnackbar(message, { variant: 'error' });
 
   useEffect(() => {
-    showResult.forEach((user) => {
-      if (user.bio === undefined && !error)
-        dispatch(getFullInfoUser({ user: user.login }));
-    });
-  }, []);
+    if (verifyDescription) {
+      listUsers.forEach((user) => {
+        if (user.bio === undefined && !error)
+          dispatch(getFullInfoUser({ user: user.login }));
+      });
+    }
+  }, [verifyDescription]);
 
   return (
     <Box data-testid={'test_home_page'} className={classes.homePage}>

@@ -10,14 +10,13 @@ const initialState: IInitialState = {
   error: false,
   message: '',
 };
-//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
 
 const requestOptions = {
   method: 'GET',
   headers: {
     accept: 'application/vnd.github+json',
     authorization:
-      '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',
+      'Bearer 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',
   },
   body: {},
   redirect: 'follow',
@@ -118,8 +117,19 @@ const mainReducer = createSlice({
         const newListUsers = state.listUsers.map((item) => {
           return item.id === payload.data.id ? payload.data : item;
         });
+        const newListUsersFavorites = state.listUsersFavorite.map((item) => {
+          const SelectUserNewPage = newListUsers.find(
+            (user) => user.id === item.id
+          );
+          return SelectUserNewPage ? SelectUserNewPage : item;
+        });
         localStorage.setItem('listUsers', JSON.stringify(newListUsers));
+        localStorage.setItem(
+          'listUsersFavorite',
+          JSON.stringify(newListUsersFavorites)
+        );
         state.listUsers = newListUsers;
+        state.listUsersFavorite = newListUsersFavorites;
         state.loading = false;
         state.error = false;
       })
