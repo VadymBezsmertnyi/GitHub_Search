@@ -1,4 +1,4 @@
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Box, Paper, InputBase, IconButton, Typography } from '@mui/material';
@@ -8,8 +8,9 @@ import {
 } from '@mui/icons-material';
 
 import { IconFavorite } from 'components';
-import { searchUser } from 'reducers/reducer';
+import { enterLoading, searchUser } from 'reducers/reducer';
 import { AppDispatch } from 'store/store';
+import useDebounce from 'hooks/useDebounce';
 
 import useStyles from './Header.styles';
 
@@ -21,6 +22,8 @@ export interface IHeaderProps {
 const Header = ({ type, name = 'Name user' }: IHeaderProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState('');
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
   const homePage = type === 'home';
   const favoritePage = type === 'favorites';
   const detailsPage = type === 'details';
@@ -36,8 +39,16 @@ const Header = ({ type, name = 'Name user' }: IHeaderProps) => {
     const {
       target: { value },
     } = event;
-    if (value.length >= 3) dispatch(searchUser({ user: value }));
+    if (value.length >= 3) setSearchTerm(value);
+    //dispatch(searchUser({ user: value }));
   };
+
+  useEffect(() => {
+    if (debouncedSearchTerm) {
+      dispatch(enterLoading());
+      dispatch(searchUser({ user: searchTerm }));
+    }
+  }, [debouncedSearchTerm]);
 
   return (
     <Box data-testid={'test_component_header'} className={classes.header}>
@@ -51,10 +62,19 @@ const Header = ({ type, name = 'Name user' }: IHeaderProps) => {
           {homePage && (
             <SearchIcon data-testid={'test_component_header_home_icon'} />
           )}
-          {!homePage && <ArrowBackIcon data-testid={'test_component_header_not_home_icon'} />}
+          {!homePage && (
+            <ArrowBackIcon
+              data-testid={'test_component_header_not_home_icon'}
+            />
+          )}
         </IconButton>
         {favoritePage && (
-          <Typography data-testid={'test_component_header_favorites_title'} className={classes.input}>Favorites</Typography>
+          <Typography
+            data-testid={'test_component_header_favorites_title'}
+            className={classes.input}
+          >
+            Favorites
+          </Typography>
         )}
         {homePage && (
           <InputBase

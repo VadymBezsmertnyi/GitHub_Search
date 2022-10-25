@@ -44,6 +44,9 @@ const mainReducer = createSlice({
   name: 'users',
   initialState,
   reducers: {
+    enterLoading: (state) => {
+      state.loading = true;
+    },
     addFavorite: (state, action) => {
       const { payload } = action;
       const verify =
@@ -139,6 +142,7 @@ const { actions, reducer } = mainReducer;
 export default reducer;
 
 export const {
+  enterLoading,
   addFavorite,
   deleteFavorite,
   addFavoriteUsersThisLocalStorage,

@@ -17,13 +17,11 @@ const HomePage = () => {
   );
   const dispatch = useDispatch<AppDispatch>();
   const { enqueueSnackbar } = useSnackbar();
-  const showResult = listUsers
-    .map((user) => {
-      const favoriteUser =
-        listUsersFavorite.findIndex((favorite) => favorite.id === user.id) >= 0;
-      return { ...user, favorite: favoriteUser };
-    })
-    .slice(0, 5);
+  const showResult = listUsers.map((user) => {
+    const favoriteUser =
+      listUsersFavorite.findIndex((favorite) => favorite.id === user.id) >= 0;
+    return { ...user, favorite: favoriteUser };
+  });
 
   const classes = useStyles();
 

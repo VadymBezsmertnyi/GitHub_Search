@@ -41,8 +41,6 @@ const DetailsPage = ({ userTest }: IDetailsPageProps) => {
       dispatch(getFullInfoUser({ user: selectUser.login }));
   }, []);
 
-  console.log(selectUser);
-
   return (
     <Box data-testid={'test_details_page'} className={classes.detailsPage}>
       <Header type="details" name={selectUser?.login} />

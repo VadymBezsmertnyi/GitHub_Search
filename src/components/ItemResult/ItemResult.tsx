@@ -1,13 +1,14 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Box, Divider, Typography } from '@mui/material';
 
 import { IconFavorite } from 'components';
-import { addFavorite, deleteFavorite } from 'reducers/reducer';
+import { addFavorite, deleteFavorite, getFullInfoUser } from 'reducers/reducer';
 import { AppDispatch } from 'store/store';
-import { TUser } from 'types/main';
+import { IInitialState, TUser } from 'types/main';
 
 import useStyles from './ItemResult.styles';
+import { useEffect } from 'react';
 
 interface IItemResultProps {
   favorite: boolean;
@@ -29,7 +30,10 @@ const ItemResult = ({ favorite, user }: IItemResultProps) => {
   };
 
   return (
-    <Box data-testid={'test_component_item_result'} className={classes.itemResultContainer}>
+    <Box
+      data-testid={'test_component_item_result'}
+      className={classes.itemResultContainer}
+    >
       <Box className={classes.mainItemResultContainer}>
         <Box
           onClick={selectUser}
@@ -39,10 +43,13 @@ const ItemResult = ({ favorite, user }: IItemResultProps) => {
         />
         <Box onClick={selectUser} className={classes.textUserContainer}>
           <Typography
-          data-testid={'test_component_item_result_login'}
+            data-testid={'test_component_item_result_login'}
             className={classes.nameUser}
           >{`@${user.login}`}</Typography>
-          <Typography data-testid={'test_component_item_result_description'} className={classes.descriptionsUser}>
+          <Typography
+            data-testid={'test_component_item_result_description'}
+            className={classes.descriptionsUser}
+          >
             {user.bio}
           </Typography>
         </Box>
